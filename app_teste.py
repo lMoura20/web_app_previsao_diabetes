@@ -17,7 +17,7 @@ st.markdown("<h3 style='text-align: center; color: black;'>Lincoln Moura</h3>", 
 st.markdown("<h3 style='text-align: center; color: black;'>Greici Capellari</h3>", unsafe_allow_html=True)
 
 #dataset
-df = pd.read_csv("diabetes.csv")
+df = pd.read_csv("C:/Users/linco/Desktop/GRUPO IA/deteccao anomalias/streamlit/diabetes.csv")
 
 #cabeçalho
 st.write("**Informações dos dados**")
@@ -121,4 +121,45 @@ st.write(metrics.accuracy_score(y_test, model_rforest.predict(x_text))*100)
 
 graf = st.bar_chart(user_input_variables)
 
+import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
+fig1 = px.bar(df, x='Age', y='Glucose',
+              color='Outcome')
+fig1.update_layout(showlegend=False,
+                   title="Relação Idade x Glicose para determinação de Diabete",
+                   title_x=0.5,
+                   xaxis_title='Idade',
+                   yaxis_title='Glicose')
+st.plotly_chart(fig1)
+
+fig2 = px.bar(df, x='Age', y='BMI',
+              color='Outcome')
+fig2.update_layout(showlegend=False,
+                   title="Relação Idade x BMI para determinação de Diabete",
+                   title_x=0.5,
+                   xaxis_title='Idade',
+                   yaxis_title='BMI')
+st.plotly_chart(fig2)
+
+fig3 = px.pie(df, values='Age', names='Outcome', title='Proporção da Idade por Diabetes')
+st.plotly_chart(fig3)
+
+fig4 = px.pie(df, values='BloodPressure', names='Outcome', title='Proporção da Pressão Sanguínea por Diabetes')
+st.plotly_chart(fig3)
+
+fig5 = px.scatter(df, x="Age", y="BMI", marginal_y="violin",
+                 marginal_x="box", trendline="ols",color="Outcome", template="simple_white")
+st.plotly_chart(fig5)
+
+fig5 = px.scatter(df, x="Age", y="BloodPressure",color="Outcome",  marginal_y="violin",
+                  marginal_x="box", trendline="ols", template="simple_white")
+st.plotly_chart(fig5)
+
+fig6 = px.scatter_matrix(df, color="Outcome",width=800, height=800)
+st.plotly_chart(fig6)
+
+fig7 = px.bar_polar(df, r="Insulin", theta="Age", color="Outcome", template="plotly_dark",
+                   color_discrete_sequence= px.colors.sequential.Plasma_r,width=800, height=800)
+st.plotly_chart(fig7)
