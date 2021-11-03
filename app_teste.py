@@ -1,6 +1,6 @@
 import pandas as pd
 import streamlit as st
-from sklearn.metrics import accuracy_score
+from sklearn import metrics
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
@@ -103,19 +103,19 @@ st.table(resultado)
 #acurácia do modelo
 st.subheader('Acurácia do modelo')
 st.subheader('Tree')
-st.write(accuracy_score(y_test, dtc.predict(x_text))*100)
+st.write(metrics.accuracy_score(y_test, dtc.predict(x_text))*100)
 
 #acurácia do modelo
 st.subheader('SVC')
-st.write(accuracy_score(y_test, model_svc.predict(x_text))*100)
+st.write(metrics.accuracy_score(y_test, model_svc.predict(x_text))*100)
 
 #acurácia do modelo
 st.subheader('KNN')
-st.write(accuracy_score(y_test, model_knn.predict(x_text))*100)
+st.write(metrics.accuracy_score(y_test, model_knn.predict(x_text))*100)
 
 #acurácia do modelo
 st.subheader('RFOREST')
-st.write(accuracy_score(y_test, model_rforest.predict(x_text))*100)
+st.write(metrics.accuracy_score(y_test, model_rforest.predict(x_text))*100)
 
 #grafico
 
