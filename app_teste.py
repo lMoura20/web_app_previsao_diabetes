@@ -17,7 +17,7 @@ st.markdown("<h3 style='text-align: center; color: black;'>Lincoln Moura</h3>", 
 st.markdown("<h3 style='text-align: center; color: black;'>Greici Capellari</h3>", unsafe_allow_html=True)
 
 #dataset
-df = pd.read_csv("C:/Users/linco/Desktop/GRUPO IA/deteccao anomalias/streamlit/diabetes.csv")
+df = pd.read_csv("diabetes.csv")
 
 #cabeçalho
 st.write("**Informações dos dados**")
