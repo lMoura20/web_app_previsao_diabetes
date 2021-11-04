@@ -23,7 +23,7 @@ st.markdown("<h5 style='text-align: center; color: green;'>Quando resultado for 
 st.markdown("<h5 style='text-align: center; color: green;'>Você também pode verificar acurácia da predição de diabetes para cada modelo. As figuras apresentam alguns aspectos das variáveis utilizadas para o treinamento do modelo. </h5>", unsafe_allow_html=True)
 
 #dataset
-df = pd.read_csv("C:/Users/linco/Desktop/GRUPO IA/deteccao anomalias/streamlit/diabetes.csv")
+df = pd.read_csv("diabetes.csv")
 
 #cabeçalho
 st.markdown("<h3 style='text-align: left; color: black;'>Resultado da Previsão:</h3>", unsafe_allow_html=True)
