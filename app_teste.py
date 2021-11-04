@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import streamlit as st
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
@@ -8,19 +9,24 @@ from sklearn import tree
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
+import plotly.express as px
 
 #título
 st.markdown("<h1 style='text-align: center; color: black;'>Prevendo Diabetes</h1>", unsafe_allow_html=True)
 
 st.markdown("<h3 style='text-align: center; color: black;'>Programa de demonstração desenvolvido por:</h3>", unsafe_allow_html=True)
-st.markdown("<h3 style='text-align: center; color: black;'>Lincoln Moura</h3>", unsafe_allow_html=True)
-st.markdown("<h3 style='text-align: center; color: black;'>Greici Capellari</h3>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center; color: black;'>Lincoln Moura e Greici Capellari</h3>", unsafe_allow_html=True)
+
+st.markdown("<h5 style='text-align: center; color: green;'>Esta aplicação de inteligência artificial tem como objetivo fornecer uma ferramente de análise preditiva para auxílio a tomada de decisão dos profissionais. No lado esquerdo da tela, insira as variáveis referente as informações clínicas do paciente e verifique o resultado do modelo.</h5>", unsafe_allow_html=True)
+
+st.markdown("<h5 style='text-align: center; color: green;'>Quando resultado for 1, o paciente possui alta probabilidade para desenvolver diabetes e para resultado 0 não possui. Você também pode verificar acurácia da predição de diabetes para cada modelo.</h5>", unsafe_allow_html=True)
+st.markdown("<h5 style='text-align: center; color: green;'>Você também pode verificar acurácia da predição de diabetes para cada modelo. As figuras apresentam alguns aspectos das variáveis utilizadas para o treinamento do modelo. </h5>", unsafe_allow_html=True)
 
 #dataset
-df = pd.read_csv("diabetes.csv")
+df = pd.read_csv("C:/Users/linco/Desktop/GRUPO IA/deteccao anomalias/streamlit/diabetes.csv")
 
 #cabeçalho
-st.write("**Informações dos dados**")
+st.markdown("<h3 style='text-align: left; color: black;'>Resultado da Previsão:</h3>", unsafe_allow_html=True)
 
 #nomedousuário
 user_input = st.sidebar.text_input("Digite seu nome")
@@ -99,31 +105,24 @@ resultado['RFOREST'] = prediction_rforest
 resultado.index= ['resultado']
 st.table(resultado)
 
-
 #acurácia do modelo
-st.subheader('Acurácia do modelo')
-st.subheader('Tree')
-st.write(metrics.accuracy_score(y_test, dtc.predict(x_text))*100)
+st.subheader('Acurácia dos modelos:')
 
+#Criando as colunas para cada modelo
+col1, col2, col3, col4 = st.columns(4)
+col1.metric('Tree', str(np.around(metrics.accuracy_score(y_test, dtc.predict(x_text))*100,2))+' %')
 #acurácia do modelo
-st.subheader('SVC')
-st.write(metrics.accuracy_score(y_test, model_svc.predict(x_text))*100)
-
+col2.metric('SVC', str(np.around(metrics.accuracy_score(y_test, model_svc.predict(x_text))*100,2))+' %')
 #acurácia do modelo
-st.subheader('KNN')
-st.write(metrics.accuracy_score(y_test, model_knn.predict(x_text))*100)
-
+col3.metric('KNN', str(np.around(metrics.accuracy_score(y_test, model_knn.predict(x_text))*100,2))+' %')
 #acurácia do modelo
-st.subheader('RFOREST')
-st.write(metrics.accuracy_score(y_test, model_rforest.predict(x_text))*100)
+col4.metric('RANDOM FOREST', str(np.around(metrics.accuracy_score(y_test, model_rforest.predict(x_text))*100,2))+' %')
 
 #grafico
-
-graf = st.bar_chart(user_input_variables)
-
-import plotly.express as px
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
+st.subheader('Composição dos dados utilizados para a previsão.')
+user_input_variables.rename(index={0: 'valor'}, inplace= True)
+fig = px.pie(user_input_variables.T, values='valor', names=user_input_variables.T.index)
+st.plotly_chart(fig)
 
 fig1 = px.bar(df, x='Age', y='Glucose',
               color='Outcome')
@@ -143,11 +142,12 @@ fig2.update_layout(showlegend=False,
                    yaxis_title='BMI')
 st.plotly_chart(fig2)
 
-fig3 = px.pie(df, values='Age', names='Outcome', title='Proporção da Idade por Diabetes')
-st.plotly_chart(fig3)
+col1,col2 = st.columns(2)
+fig3 = px.pie(df, values='Age', names='Outcome', title='Proporção da Idade por Diabetes',width=380, height=400)
+col1.plotly_chart(fig3)
 
-fig4 = px.pie(df, values='BloodPressure', names='Outcome', title='Proporção da Pressão Sanguínea por Diabetes')
-st.plotly_chart(fig3)
+fig4 = px.pie(df, values='BloodPressure', names='Outcome', title='Proporção da Pressão Sanguínea por Diabetes',width=380, height=400)
+col2.plotly_chart(fig3)
 
 fig5 = px.scatter(df, x="Age", y="BMI", marginal_y="violin",
                  marginal_x="box", trendline="ols",color="Outcome", template="simple_white")
