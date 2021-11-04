@@ -109,7 +109,7 @@ st.table(resultado)
 st.subheader('Acurácia dos modelos:')
 
 #Criando as colunas para cada modelo
-col1, col2, col3, col4 = st.columns(st.columns([1, 1, 1, 1]))
+col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
 col1.metric('Tree', str(np.around(metrics.accuracy_score(y_test, dtc.predict(x_text))*100,2))+' %')
 #acurácia do modelo
 col2.metric('SVC', str(np.around(metrics.accuracy_score(y_test, model_svc.predict(x_text))*100,2))+' %')
