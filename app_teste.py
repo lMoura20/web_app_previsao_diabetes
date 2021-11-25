@@ -61,11 +61,10 @@ user_input = st.sidebar.text_input("Digite o nome do paciente:")
 st.write("Paciente:", user_input)
 text = st.empty()
 value = "Inserir dados"
-text.text_area("Inserir dados complementares do paciente:", value)
 
 if st.button('Enviar'):
     value = "Inserir dados"
-    text.text_area("Inserir dados complementares do paciente:", value)
+text.text_area("Inserir dados complementares do paciente:", value)
 
 #dados de entrada
 x = df.drop(['Outcome'],1)
