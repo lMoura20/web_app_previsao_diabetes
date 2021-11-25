@@ -4,35 +4,68 @@ import streamlit as st
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-
+import datetime
 from sklearn import tree
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 import plotly.express as px
+from PIL import Image
+
+st.set_page_config(
+    page_title="App_Teste",
+    page_icon="random",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    menu_items={
+                 'About': "# Entre em contato com: greicicapellari@gmail.com"
+                 }
+)
+
+image = Image.open('diabetes.jfif')
+st.sidebar.image(image)
 
 #título
-st.markdown("<h1 style='text-align: center; color: black;'>Prevendo Diabetes</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: black;'>Aplicativo Teste de Predição de Diabetes</h1>", unsafe_allow_html=True)
 
-st.markdown("<h3 style='text-align: center; color: black;'>Programa de demonstração desenvolvido por:</h3>", unsafe_allow_html=True)
-st.markdown("<h3 style='text-align: center; color: black;'>Lincoln Moura e Greici Capellari</h3>", unsafe_allow_html=True)
+st.markdown("<h4 style='text-align: center; color: black;'>Criado por Lincoln Moura e Greici Capellari</h4>", unsafe_allow_html=True)
 
-st.markdown("<h5 style='text-align: center; color: green;'>Esta aplicação de inteligência artificial tem como objetivo fornecer uma ferramente de análise preditiva para auxílio a tomada de decisão dos profissionais. No lado esquerdo da tela, insira as variáveis referente as informações clínicas do paciente e verifique o resultado do modelo.</h5>", unsafe_allow_html=True)
+with st.expander("Emails para contato: "):
+    st.write("lincolnsobral@yahoo.com.br - [https://www.linkedin.com/in/lincoln-moura-115323124](linkedin.com/in/lincoln-moura-115323124)")
+    st.write("greicicapellari@gmail.com - [https://www.linkedin.com/in/greici-capellari-fabrizzio-51a310154](linkedin.com/in/greici-capellari-fabrizzio-51a310154)")
 
-st.markdown("<h5 style='text-align: center; color: green;'>Quando resultado for 1, o paciente possui alta probabilidade para desenvolver diabetes e para resultado 0 não possui. Você também pode verificar acurácia da predição de diabetes para cada modelo.</h5>", unsafe_allow_html=True)
-st.markdown("<h5 style='text-align: center; color: green;'>Você também pode verificar acurácia da predição de diabetes para cada modelo. As figuras apresentam alguns aspectos das variáveis utilizadas para o treinamento do modelo. </h5>", unsafe_allow_html=True)
+
+st.info("**Esta aplicação de inteligência artificial tem como objetivo fornecer uma ferramenta de "
+        "análise preditiva** para auxílio a tomada de decisão dos profissionais. No lado esquerdo da tela,"
+        " insira as variáveis referente as informações clínicas do paciente e verifique o resultado do modelo."
+        " Quando resultado for 1, o paciente possui alta probabilidade para desenvolver diabetes e para resultado 0 não possui. "
+        "Você também pode verificar acurácia da predição de diabetes para cada modelo. Você também pode verificar acurácia da predição"
+        " de diabetes para cada modelo. As figuras apresentam alguns aspectos das variáveis utilizadas para o treinamento do modelo.")
+
+st.error("Ferramenta de análise criada para demonstração.")
 
 #dataset
-df = pd.read_csv("diabetes.csv")
+df = pd.read_csv("C:/Users/linco/Desktop/GRUPO IA/deteccao anomalias/streamlit/diabetes.csv")
 
 #cabeçalho
 st.markdown("<h3 style='text-align: left; color: black;'>Resultado da Previsão:</h3>", unsafe_allow_html=True)
 
 #nomedousuário
-user_input = st.sidebar.text_input("Digite seu nome")
+st.sidebar.markdown("<h1 style='text-align: center; color: black;'>Insira os dados do paciente</h1>", unsafe_allow_html=True)
+d = st.sidebar.date_input( "Data da avaliação", datetime.datetime.today())
+user_input = st.sidebar.text_input("Digite o nome do paciente:")
+
+
 
 #escrevendo o nome do usuário
 st.write("Paciente:", user_input)
+text = st.empty()
+value = " "
+text.text_area("Inserir dados complementares do paciente:", value)
+
+if st.button('Enviar'):
+    value = " "
+    text.text_area("Inserir dados complementares do paciente:", value)
 
 #dados de entrada
 x = df.drop(['Outcome'],1)
@@ -74,92 +107,96 @@ def get_user_date():
 
 user_input_variables = get_user_date()
 
-#Modelagem
-dtc = tree.DecisionTreeClassifier(criterion='entropy', max_depth=3)
-dtc.fit(x_train, y_train)
+if st.button('Realizar a análise: '):
 
-#Modelo SVC
-model_svc = SVC(gamma='auto')
-model_svc.fit(x_train, y_train)
+    #Modelagem
+    dtc = tree.DecisionTreeClassifier(criterion='entropy', max_depth=3)
+    dtc.fit(x_train, y_train)
 
-#Modelo KNN
-model_knn = KNeighborsClassifier(n_neighbors=3)
-model_knn.fit(x_train, y_train)
+    #Modelo SVC
+    model_svc = SVC(gamma='auto')
+    model_svc.fit(x_train, y_train)
 
-#Modelo RANDOM FOREST
-model_rforest = RandomForestClassifier(random_state=0)
-model_rforest.fit(x_train, y_train)
+    #Modelo KNN
+    model_knn = KNeighborsClassifier(n_neighbors=3)
+    model_knn.fit(x_train, y_train)
 
-#previsão do resultado
-prediction_tree = dtc.predict(user_input_variables)
-prediction_SVC = model_svc.predict(user_input_variables)
-prediction_KNN = model_knn.predict(user_input_variables)
-prediction_rforest = model_rforest.predict(user_input_variables)
+    #Modelo RANDOM FOREST
+    model_rforest = RandomForestClassifier(random_state=0)
+    model_rforest.fit(x_train, y_train)
 
-#Tabela Resultado
-resultado = pd.DataFrame()
-resultado['TREE'] = prediction_tree
-resultado['SVC'] = prediction_SVC
-resultado['KNN'] = prediction_KNN
-resultado['RFOREST'] = prediction_rforest
-resultado.index= ['resultado']
-st.table(resultado)
+    #previsão do resultado
+    prediction_tree = dtc.predict(user_input_variables)
+    prediction_SVC = model_svc.predict(user_input_variables)
+    prediction_KNN = model_knn.predict(user_input_variables)
+    prediction_rforest = model_rforest.predict(user_input_variables)
 
-#acurácia do modelo
-st.subheader('Acurácia dos modelos:')
+    #Tabela Resultado
+    resultado = pd.DataFrame()
+    resultado['TREE'] = prediction_tree
+    resultado['SVC'] = prediction_SVC
+    resultado['KNN'] = prediction_KNN
+    resultado['RFOREST'] = prediction_rforest
+    resultado.index= ['resultado']
+    st.table(resultado)
 
-#Criando as colunas para cada modelo
-col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
-col1.metric('Tree', str(np.around(metrics.accuracy_score(y_test, dtc.predict(x_text))*100,2))+' %')
-#acurácia do modelo
-col2.metric('SVC', str(np.around(metrics.accuracy_score(y_test, model_svc.predict(x_text))*100,2))+' %')
-#acurácia do modelo
-col3.metric('KNN', str(np.around(metrics.accuracy_score(y_test, model_knn.predict(x_text))*100,2))+' %')
-#acurácia do modelo
-col4.metric('RANDOM FOREST', str(np.around(metrics.accuracy_score(y_test, model_rforest.predict(x_text))*100,2))+' %')
+    #acurácia do modelo
+    st.subheader('Acurácia dos modelos:')
 
-#grafico
-st.subheader('Composição dos dados utilizados para a previsão.')
-user_input_variables.rename(index={0: 'valor'}, inplace= True)
-fig = px.pie(user_input_variables.T, values='valor', names=user_input_variables.T.index)
-st.plotly_chart(fig)
+    #Criando as colunas para cada modelo
 
-fig1 = px.bar(df, x='Age', y='Glucose',
-              color='Outcome')
-fig1.update_layout(showlegend=False,
-                   title="Relação Idade x Glicose para determinação de Diabete",
-                   title_x=0.5,
-                   xaxis_title='Idade',
-                   yaxis_title='Glicose')
-st.plotly_chart(fig1)
+    col1, col2, col3, col4 = st.columns(4)
 
-fig2 = px.bar(df, x='Age', y='BMI',
-              color='Outcome')
-fig2.update_layout(showlegend=False,
-                   title="Relação Idade x BMI para determinação de Diabete",
-                   title_x=0.5,
-                   xaxis_title='Idade',
-                   yaxis_title='BMI')
-st.plotly_chart(fig2)
+    col1.metric('Tree', str(np.around(metrics.accuracy_score(y_test, dtc.predict(x_text))*100,2))+' %')
+    #acurácia do modelo
+    col2.metric('SVC', str(np.around(metrics.accuracy_score(y_test, model_svc.predict(x_text))*100,2))+' %')
+    #acurácia do modelo
+    col3.metric('KNN', str(np.around(metrics.accuracy_score(y_test, model_knn.predict(x_text))*100,2))+' %')
+    #acurácia do modelo
+    col4.metric('RANDOM FOREST', str(np.around(metrics.accuracy_score(y_test, model_rforest.predict(x_text))*100,2))+' %')
 
-col1,col2 = st.columns(2)
-fig3 = px.pie(df, values='Age', names='Outcome', title='Proporção da Idade por Diabetes',width=380, height=400)
-col1.plotly_chart(fig3)
+    #grafico
+    st.subheader('Composição dos dados utilizados para a previsão.')
+    user_input_variables.rename(index={0: 'valor'}, inplace= True)
+    fig = px.pie(user_input_variables.T, values='valor', names=user_input_variables.T.index)
+    st.plotly_chart(fig)
 
-fig4 = px.pie(df, values='BloodPressure', names='Outcome', title='Proporção da Pressão Sanguínea por Diabetes',width=380, height=400)
-col2.plotly_chart(fig3)
+    fig1 = px.bar(df, x='Age', y='Glucose',
+                  color='Outcome')
+    fig1.update_layout(showlegend=False,
+                       title="Relação Idade x Glicose para determinação de Diabete",
+                       title_x=0.5,
+                       xaxis_title='Idade',
+                       yaxis_title='Glicose')
+    st.plotly_chart(fig1)
 
-fig5 = px.scatter(df, x="Age", y="BMI", marginal_y="violin",
-                 marginal_x="box", trendline="ols",color="Outcome", template="simple_white")
-st.plotly_chart(fig5)
+    fig2 = px.bar(df, x='Age', y='BMI',
+                  color='Outcome')
+    fig2.update_layout(showlegend=False,
+                       title="Relação Idade x BMI para determinação de Diabete",
+                       title_x=0.5,
+                       xaxis_title='Idade',
+                       yaxis_title='BMI')
+    st.plotly_chart(fig2)
 
-fig5 = px.scatter(df, x="Age", y="BloodPressure",color="Outcome",  marginal_y="violin",
-                  marginal_x="box", trendline="ols", template="simple_white")
-st.plotly_chart(fig5)
+    col1,col2 = st.columns(2)
+    fig3 = px.pie(df, values='Age', names='Outcome', title='Proporção da Idade por Diabetes',width=380, height=400)
+    col1.plotly_chart(fig3)
 
-fig6 = px.scatter_matrix(df, color="Outcome",width=800, height=800)
-st.plotly_chart(fig6)
+    fig4 = px.pie(df, values='BloodPressure', names='Outcome', title='Proporção da Pressão Sanguínea por Diabetes',width=380, height=400)
+    col2.plotly_chart(fig3)
 
-fig7 = px.bar_polar(df, r="Insulin", theta="Age", color="Outcome", template="plotly_dark",
-                   color_discrete_sequence= px.colors.sequential.Plasma_r,width=800, height=800)
-st.plotly_chart(fig7)
+    fig5 = px.scatter(df, x="Age", y="BMI", marginal_y="violin",
+                     marginal_x="box", trendline="ols",color="Outcome", template="simple_white")
+    st.plotly_chart(fig5)
+
+    fig5 = px.scatter(df, x="Age", y="BloodPressure",color="Outcome",  marginal_y="violin",
+                      marginal_x="box", trendline="ols", template="simple_white")
+    st.plotly_chart(fig5)
+
+    fig6 = px.scatter_matrix(df, color="Outcome",width=800, height=800)
+    st.plotly_chart(fig6)
+
+    fig7 = px.bar_polar(df, r="Insulin", theta="Age", color="Outcome", template="plotly_dark",
+                       color_discrete_sequence= px.colors.sequential.Plasma_r,width=800, height=800)
+    st.plotly_chart(fig7)
