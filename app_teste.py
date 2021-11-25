@@ -45,7 +45,7 @@ st.info("**Esta aplicação de inteligência artificial tem como objetivo fornec
 st.error("Ferramenta de análise criada para demonstração.")
 
 #dataset
-df = pd.read_csv("C:/Users/linco/Desktop/GRUPO IA/deteccao anomalias/streamlit/diabetes.csv")
+df = pd.read_csv("diabetes.csv")
 
 #cabeçalho
 st.markdown("<h3 style='text-align: left; color: black;'>Resultado da Previsão:</h3>", unsafe_allow_html=True)
