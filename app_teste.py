@@ -31,8 +31,8 @@ st.markdown("<h1 style='text-align: center; color: black;'>Aplicativo Teste de P
 st.markdown("<h4 style='text-align: center; color: black;'>Criado por Lincoln Moura e Greici Capellari</h4>", unsafe_allow_html=True)
 
 with st.expander("Emails para contato: "):
-    st.write("lincolnsobral@yahoo.com.br - [https://www.linkedin.com/in/lincoln-moura-115323124](linkedin.com/in/lincoln-moura-115323124)")
-    st.write("greicicapellari@gmail.com - [https://www.linkedin.com/in/greici-capellari-fabrizzio-51a310154](linkedin.com/in/greici-capellari-fabrizzio-51a310154)")
+    st.write("lincolnsobral@yahoo.com.br - linkedin.com/in/lincoln-moura-115323124")
+    st.write("greicicapellari@gmail.com - linkedin.com/in/greici-capellari-fabrizzio-51a310154")
 
 
 st.info("**Esta aplicação de inteligência artificial tem como objetivo fornecer uma ferramenta de "
