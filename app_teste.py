@@ -62,8 +62,6 @@ st.write("Paciente:", user_input)
 text = st.empty()
 value = "Inserir dados"
 
-if st.button('Enviar'):
-    value = "Inserir dados"
 text.text_area("Inserir dados complementares do paciente:", value)
 
 #dados de entrada
