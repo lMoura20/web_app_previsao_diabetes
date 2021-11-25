@@ -104,7 +104,7 @@ def get_user_date():
 
 user_input_variables = get_user_date()
 
-if st.button('Realizar a análise: '):
+if st.button('Realizar a análise '):
 
     #Modelagem
     dtc = tree.DecisionTreeClassifier(criterion='entropy', max_depth=3)
