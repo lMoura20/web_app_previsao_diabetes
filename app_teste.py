@@ -60,11 +60,11 @@ user_input = st.sidebar.text_input("Digite o nome do paciente:")
 #escrevendo o nome do usuário
 st.write("Paciente:", user_input)
 text = st.empty()
-value = " "
+value = "Inserir dados"
 text.text_area("Inserir dados complementares do paciente:", value)
 
 if st.button('Enviar'):
-    value = " "
+    value = "Inserir dados"
     text.text_area("Inserir dados complementares do paciente:", value)
 
 #dados de entrada
